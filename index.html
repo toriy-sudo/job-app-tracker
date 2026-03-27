@@ -1170,7 +1170,9 @@ ${jd}`;
           messages: [{ role: 'user', content: prompt }]
         })
       });
-      const data = await resp.json();
+      const rawText = await resp.text();
+      console.log('Autofill API raw response:', rawText);
+      const data = JSON.parse(rawText);
       const text = (data.content || []).map(b => b.text || '').join('');
       const clean = text.replace(/```json|```/g, '').trim();
       const result = JSON.parse(clean);
@@ -1273,7 +1275,9 @@ Return ONLY valid JSON (no markdown, no explanation) in this exact format:
           messages: [{ role: 'user', content: prompt }]
         })
       });
-      const data = await resp.json();
+      const rawText = await resp.text();
+      console.log('Match API raw response:', rawText);
+      const data = JSON.parse(rawText);
       const text = (data.content || []).map(b => b.text || '').join('');
       const clean = text.replace(/```json|```/g, '').trim();
       const result = JSON.parse(clean);
