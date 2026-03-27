@@ -63,21 +63,6 @@
     .filter-chip:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
     .filter-chip.active { background: var(--accent); color: white; border-color: var(--accent); }
 
-    /* SOURCE TABS */
-    .source-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
-    .source-tab { display: flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 500; color: var(--muted); padding: 4px 10px; border-radius: 20px; background: var(--bg); border: 1px solid var(--border); }
-    .source-tab .dot { width: 8px; height: 8px; border-radius: 50%; }
-    .source-tab.google .dot { background: #4285f4; }
-    .source-tab.linkedin .dot { background: #0077b5; }
-    .source-tab.indeed .dot { background: #003a9b; }
-    .source-tab .count { font-weight: 600; color: var(--text); }
-
-    /* SOURCE BADGE on cards */
-    .source-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.4px; }
-    .source-badge.google { background: #e8f0fe; color: #4285f4; }
-    .source-badge.linkedin { background: #e8f3fa; color: #0077b5; }
-    .source-badge.indeed { background: #e8ebf7; color: #003a9b; }
-
     .results-section { padding: 20px 32px 40px; }
     .results-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 10px; }
     .results-count { font-size: 13px; color: var(--muted); }
@@ -102,10 +87,6 @@
     .btn-add-tracker.added { background: var(--muted); cursor: default; }
     .btn-add-tracker.added:hover { opacity: 1; }
 
-    /* LOADING PROGRESS */
-    .progress-bar-wrap { background: var(--border); border-radius: 4px; height: 4px; margin-top: 8px; overflow: hidden; }
-    .progress-bar { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.4s ease; }
-
     .state-box { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 48px; text-align: center; color: var(--muted); }
     .state-icon { font-size: 32px; margin-bottom: 10px; }
     .state-title { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--text); margin-bottom: 6px; font-weight: 400; }
@@ -125,7 +106,7 @@
 <header>
   <div>
     <h1>Job Finder</h1>
-    <span class="subtitle">Search Google Jobs, LinkedIn & Indeed in one place</span>
+    <span class="subtitle">Discover roles tailored to your background</span>
   </div>
   <a href="index.html" class="nav-link">← My Tracker</a>
 </header>
@@ -141,7 +122,7 @@
       </div>
       <button class="btn-search" id="btnSearch" onclick="doSearch()">
         <div class="search-spinner"></div>
-        <span class="search-text">🔍 Search All</span>
+        <span class="search-text">🔍 Search</span>
       </button>
     </div>
     <div class="quick-filters">
@@ -161,7 +142,7 @@
     <div class="state-box">
       <div class="state-icon">🔍</div>
       <div class="state-title">Find your next role</div>
-      <div class="state-sub">Searches Google Jobs, LinkedIn, and Indeed simultaneously</div>
+      <div class="state-sub">Search above or tap a quick filter to see current openings</div>
     </div>
   </div>
 </div>
@@ -199,91 +180,46 @@
     document.getElementById('resultsArea').innerHTML = `
       <div class="state-box">
         <div class="state-icon">⏳</div>
-        <div class="state-title">Searching 3 job boards…</div>
-        <div class="state-sub">Google Jobs, LinkedIn & Indeed</div>
-        <div class="progress-bar-wrap" style="max-width:200px;margin:12px auto 0">
-          <div class="progress-bar" id="progressBar" style="width:5%"></div>
-        </div>
+        <div class="state-title">Searching…</div>
+        <div class="state-sub">Finding ${esc(query)} roles near ${esc(location) || 'your area'}</div>
       </div>`;
 
-    // Run all 3 searches in parallel
-    const [googleRes, linkedinRes, indeedRes] = await Promise.allSettled([
-      fetchGoogle(query, location),
-      fetchLinkedIn(query, location),
-      fetchIndeed(query, location),
-    ]);
+    try {
+      const resp = await fetch(`${WORKER_URL}/search?q=${encodeURIComponent(query + ' jobs')}&location=${encodeURIComponent(location)}`);
+      const data = await resp.json();
+      if (data.error) throw new Error(data.error);
+      const jobs = data.jobs_results || [];
 
-    const googleJobs = (googleRes.status === 'fulfilled' ? googleRes.value : []).map(j => ({ ...j, _source: 'google' }));
-    const linkedinJobs = (linkedinRes.status === 'fulfilled' ? linkedinRes.value : []).map(j => ({ ...j, _source: 'linkedin' }));
-    const indeedJobs = (indeedRes.status === 'fulfilled' ? indeedRes.value : []).map(j => ({ ...j, _source: 'indeed' }));
+      if (!jobs.length) {
+        document.getElementById('resultsArea').innerHTML = `
+          <div class="state-box">
+            <div class="state-icon">😕</div>
+            <div class="state-title">No results found</div>
+            <div class="state-sub">Try a different search term or location</div>
+          </div>`;
+        return;
+      }
 
-    const allJobs = [...googleJobs, ...linkedinJobs, ...indeedJobs];
-
-    btn.classList.remove('loading');
-    btn.disabled = false;
-
-    if (!allJobs.length) {
+      renderResults(jobs, query, location);
+    } catch(err) {
+      console.error(err);
       document.getElementById('resultsArea').innerHTML = `
         <div class="state-box">
-          <div class="state-icon">😕</div>
-          <div class="state-title">No results found</div>
-          <div class="state-sub">Try a different search term or location</div>
+          <div class="state-icon">⚠️</div>
+          <div class="state-title">Search failed</div>
+          <div class="state-sub">Check your SerpAPI key in the Cloudflare Worker and try again.</div>
         </div>`;
-      return;
+    } finally {
+      btn.classList.remove('loading');
+      btn.disabled = false;
     }
-
-    renderResults(allJobs, query, location, googleJobs.length, linkedinJobs.length, indeedJobs.length);
   }
 
-  async function fetchGoogle(query, location) {
-    const resp = await fetch(`${WORKER_URL}/search?q=${encodeURIComponent(query + ' jobs')}&location=${encodeURIComponent(location)}`);
-    const data = await resp.json();
-    if (data.error) throw new Error(data.error);
-    return (data.jobs_results || []);
-  }
-
-  async function fetchLinkedIn(query, location) {
-    const resp = await fetch(`${WORKER_URL}/search/linkedin?q=${encodeURIComponent(query)}&location=${encodeURIComponent(location)}`);
-    const data = await resp.json();
-    console.log('LinkedIn raw:', data);
-    if (data.error) throw new Error(data.error);
-    const results = data.jobs_results || data.jobs || data.linkedin_jobs || data.results || [];
-    return results.map(j => ({
-      title: j.title || j.position || '',
-      company_name: j.company || j.company_name || j.employer || '',
-      location: j.location || '',
-      description: j.description || j.snippet || '',
-      detected_extensions: { posted_at: j.ago || j.date || j.posted_at || '' },
-      apply_options: j.link ? [{ link: j.link }] : (j.job_link ? [{ link: j.job_link }] : []),
-    }));
-  }
-
-  async function fetchIndeed(query, location) {
-    const resp = await fetch(`${WORKER_URL}/search/indeed?q=${encodeURIComponent(query)}&location=${encodeURIComponent(location)}`);
-    const data = await resp.json();
-    console.log('Indeed raw:', data);
-    if (data.error) throw new Error(data.error);
-    const results = data.jobs_results || data.jobs || data.organic_results || data.results || [];
-    return results.map(j => ({
-      title: j.title || '',
-      company_name: j.company || j.company_name || '',
-      location: j.location || '',
-      description: j.snippet || j.description || '',
-      detected_extensions: { posted_at: j.date || j.posted_at || '', salary: j.salary || '' },
-      apply_options: j.link ? [{ link: j.link }] : [],
-    }));
-  }
-
-  function renderResults(jobs, query, location, gCount, lCount, iCount) {
+  function renderResults(jobs, query, location) {
     document.getElementById('resultsArea').innerHTML = `
       <div class="results-header">
         <div class="results-count">
           <strong>${jobs.length}</strong> results for "<strong>${esc(query)}</strong>"${location ? ` in <strong>${esc(location)}</strong>` : ''}
-        </div>
-        <div class="source-tabs">
-          <div class="source-tab google"><div class="dot"></div> Google <span class="count">${gCount}</span></div>
-          <div class="source-tab linkedin"><div class="dot"></div> LinkedIn <span class="count">${lCount}</span></div>
-          <div class="source-tab indeed"><div class="dot"></div> Indeed <span class="count">${iCount}</span></div>
         </div>
       </div>
       <div class="job-grid">
@@ -298,15 +234,10 @@
     const posted = job.detected_extensions?.posted_at || '';
     const isRemote = job.detected_extensions?.work_from_home;
     const applyLink = job.related_links?.[0]?.link || job.apply_options?.[0]?.link || '#';
-    const source = job._source || 'google';
-    const sourceLabel = { google: 'Google Jobs', linkedin: 'LinkedIn', indeed: 'Indeed' }[source];
 
     return `<div class="job-card">
       <div class="job-card-body">
-        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:4px">
-          <div class="job-card-title">${esc(job.title || '')}</div>
-          <span class="source-badge ${source}">${sourceLabel}</span>
-        </div>
+        <div class="job-card-title">${esc(job.title || '')}</div>
         <div class="job-card-company">${esc(job.company_name || '')}</div>
         <div class="job-card-meta">
           ${job.location ? `<div class="job-meta-item">📍 ${esc(job.location)}</div>` : ''}
