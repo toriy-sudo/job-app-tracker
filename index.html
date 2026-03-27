@@ -1085,7 +1085,7 @@
       note: el.querySelector('.iv-note').value.trim(),
     }));
 
-    const jdText = document.getElementById('fJD').dataset.filled || document.getElementById('fJD').value.trim();
+    const jdText = document.getElementById('fJD').dataset.filled || '';
     const jobData = {
       title, company,
       location: document.getElementById('fLocation').value.trim(),
