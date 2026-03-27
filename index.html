@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,7 +38,6 @@
       line-height: 1.5;
     }
 
-    /* HEADER */
     header {
       background: var(--surface);
       border-bottom: 1px solid var(--border);
@@ -46,298 +46,130 @@
       align-items: baseline;
       gap: 16px;
     }
-    header h1 {
-      font-family: 'DM Serif Display', serif;
-      font-size: 22px;
-      font-weight: 400;
-      color: var(--text);
-      letter-spacing: -0.3px;
-    }
-    header .subtitle {
-      font-size: 13px;
-      color: var(--muted);
-      font-weight: 300;
-    }
-    .stats-bar {
-      margin-left: auto;
-      display: flex;
-      gap: 20px;
-    }
-    .stat {
-      text-align: right;
-    }
-    .stat .num {
-      font-size: 18px;
-      font-family: 'DM Serif Display', serif;
-      font-weight: 400;
-      color: var(--accent);
-      line-height: 1;
-    }
-    .stat .label {
-      font-size: 11px;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-top: 2px;
-    }
+    header h1 { font-family: 'DM Serif Display', serif; font-size: 22px; font-weight: 400; color: var(--text); letter-spacing: -0.3px; }
+    header .subtitle { font-size: 13px; color: var(--muted); font-weight: 300; }
+    .stats-bar { margin-left: auto; display: flex; gap: 20px; }
+    .stat { text-align: right; }
+    .stat .num { font-size: 18px; font-family: 'DM Serif Display', serif; font-weight: 400; color: var(--accent); line-height: 1; }
+    .stat .label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
 
-    /* TOOLBAR */
-    .toolbar {
-      padding: 16px 32px;
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    .toolbar select, .toolbar input {
-      border: 1px solid var(--border);
-      background: var(--surface);
-      border-radius: var(--radius);
-      padding: 7px 12px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13px;
-      color: var(--text);
-      outline: none;
-      transition: border-color 0.15s;
-    }
-    .toolbar select:focus, .toolbar input:focus {
-      border-color: var(--accent);
-    }
+    .toolbar { padding: 16px 32px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .toolbar select, .toolbar input { border: 1px solid var(--border); background: var(--surface); border-radius: var(--radius); padding: 7px 12px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--text); outline: none; transition: border-color 0.15s; }
+    .toolbar select:focus, .toolbar input:focus { border-color: var(--accent); }
     .toolbar input { width: 220px; }
-    .btn-add {
-      margin-left: auto;
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: var(--radius);
-      padding: 8px 18px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: opacity 0.15s;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+    .btn-add { margin-left: auto; background: var(--accent); color: white; border: none; border-radius: var(--radius); padding: 8px 18px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: opacity 0.15s; display: flex; align-items: center; gap: 6px; }
     .btn-add:hover { opacity: 0.85; }
 
-    /* TABLE */
-    .table-wrap {
-      padding: 0 32px 40px;
-      overflow-x: auto;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: var(--surface);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-    thead tr {
-      border-bottom: 2px solid var(--border);
-    }
-    th {
-      text-align: left;
-      padding: 12px 14px;
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      color: var(--muted);
-      cursor: pointer;
-      user-select: none;
-      white-space: nowrap;
-    }
+    /* DASHBOARD */
+    .dashboard { padding: 0 32px 8px; }
+    .dashboard-toggle { display: flex; align-items: center; gap: 8px; background: none; border: none; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; color: var(--muted); cursor: pointer; padding: 10px 0 8px; transition: color 0.15s; }
+    .dashboard-toggle:hover { color: var(--text); }
+    .dashboard-toggle .toggle-arrow { font-size: 10px; transition: transform 0.2s; }
+    .dashboard-toggle.open .toggle-arrow { transform: rotate(180deg); }
+    .dashboard-grid { display: none; grid-template-columns: repeat(4, 1fr); gap: 14px; padding-bottom: 20px; }
+    .dashboard-grid.open { display: grid; }
+    .dash-card { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+    .dash-card.wide { grid-column: span 2; }
+    .dash-card h3 { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted); }
+    .funnel { display: flex; flex-direction: column; gap: 7px; }
+    .funnel-row { display: flex; align-items: center; gap: 8px; }
+    .funnel-label { font-size: 12px; color: var(--muted); width: 90px; flex-shrink: 0; }
+    .funnel-bar-wrap { flex: 1; background: var(--bg); border-radius: 4px; height: 10px; overflow: hidden; }
+    .funnel-bar { height: 100%; border-radius: 4px; transition: width 0.4s ease; }
+    .funnel-bar.wishlist { background: #d4d0c8; }
+    .funnel-bar.applied { background: var(--info); }
+    .funnel-bar.interviewing { background: var(--warn); }
+    .funnel-bar.offer { background: var(--success); }
+    .funnel-bar.rejected { background: var(--danger); }
+    .funnel-count { font-size: 12px; font-weight: 600; color: var(--text); width: 20px; text-align: right; }
+    .match-breakdown { display: flex; align-items: center; gap: 14px; }
+    .match-donut-wrap { position: relative; width: 72px; height: 72px; flex-shrink: 0; }
+    .match-donut-wrap svg { transform: rotate(-90deg); }
+    .match-donut-label { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; font-family: 'DM Serif Display', serif; color: var(--text); }
+    .match-legend { display: flex; flex-direction: column; gap: 5px; }
+    .match-legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+    .match-legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .timeline-chart { display: flex; align-items: flex-end; gap: 6px; height: 60px; }
+    .timeline-col { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; }
+    .timeline-bar-wrap { flex: 1; display: flex; align-items: flex-end; width: 100%; }
+    .timeline-bar { width: 100%; background: var(--accent); border-radius: 3px 3px 0 0; min-height: 2px; transition: height 0.4s ease; }
+    .timeline-bar.zero { background: var(--border); }
+    .timeline-label { font-size: 10px; color: var(--muted); white-space: nowrap; }
+    .timeline-num { font-size: 10px; font-weight: 600; color: var(--text); }
+    .gaps-list { display: flex; flex-direction: column; gap: 6px; }
+    .gap-row { display: flex; align-items: center; gap: 8px; }
+    .gap-name { font-size: 12px; color: var(--text); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .gap-bar-wrap { width: 80px; background: var(--bg); border-radius: 4px; height: 8px; overflow: hidden; }
+    .gap-bar { height: 100%; background: var(--danger); border-radius: 4px; opacity: 0.7; }
+    .gap-count { font-size: 11px; color: var(--muted); width: 16px; text-align: right; }
+    .companies-list { display: flex; flex-direction: column; gap: 6px; }
+    .company-row { display: flex; align-items: center; gap: 8px; }
+    .company-name { font-size: 12px; font-weight: 500; color: var(--text); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .company-badges { display: flex; gap: 4px; align-items: center; }
+
+    .table-wrap { padding: 0 32px 40px; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+    thead tr { border-bottom: 2px solid var(--border); }
+    th { text-align: left; padding: 12px 14px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted); cursor: pointer; user-select: none; white-space: nowrap; }
     th:hover { color: var(--text); }
     th .sort-arrow { margin-left: 4px; opacity: 0.4; font-size: 10px; }
     th.sorted .sort-arrow { opacity: 1; color: var(--accent); }
-
-    tbody tr {
-      border-bottom: 1px solid var(--border);
-      transition: background 0.1s;
-    }
+    tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
     tbody tr:last-child { border-bottom: none; }
     tbody tr:hover { background: #faf9f7; }
-
-    td {
-      padding: 12px 14px;
-      vertical-align: top;
-    }
-
+    td { padding: 12px 14px; vertical-align: top; }
     .job-title { font-weight: 500; font-size: 14px; }
     .company { font-size: 13px; color: var(--muted); }
     .location-cell { font-size: 13px; color: var(--muted); }
     .date-cell { font-size: 12px; color: var(--muted); white-space: nowrap; }
 
-    /* PRIORITY BADGE */
-    .priority {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 12px;
-      font-weight: 500;
-      padding: 3px 9px;
-      border-radius: 20px;
-      white-space: nowrap;
-    }
+    .priority { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 500; padding: 3px 9px; border-radius: 20px; white-space: nowrap; }
     .priority.high   { background: #fdecea; color: var(--danger); }
     .priority.medium { background: var(--warn-light); color: var(--warn); }
     .priority.low    { background: var(--info-light); color: var(--info); }
 
-    /* STATUS BADGE */
-    .status {
-      display: inline-block;
-      font-size: 12px;
-      font-weight: 500;
-      padding: 3px 10px;
-      border-radius: 20px;
-      white-space: nowrap;
-    }
-    .status.wishlist      { background: #f0eeea; color: var(--muted); }
-    .status.applied       { background: var(--info-light); color: var(--info); }
-    .status.interviewing  { background: var(--warn-light); color: var(--warn); }
-    .status.offer         { background: var(--success-light); color: var(--success); }
-    .status.rejected      { background: #fdecea; color: var(--danger); }
-    .status.withdrawn     { background: #f0eeea; color: #aaa; }
+    .status { display: inline-block; font-size: 12px; font-weight: 500; padding: 3px 10px; border-radius: 20px; white-space: nowrap; }
+    .status.wishlist     { background: #f0eeea; color: var(--muted); }
+    .status.applied      { background: var(--info-light); color: var(--info); }
+    .status.interviewing { background: var(--warn-light); color: var(--warn); }
+    .status.offer        { background: var(--success-light); color: var(--success); }
+    .status.rejected     { background: #fdecea; color: var(--danger); }
+    .status.withdrawn    { background: #f0eeea; color: #aaa; }
 
-    /* MATCH BADGE */
-    .match-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 12px;
-      font-weight: 600;
-      padding: 3px 10px;
-      border-radius: 20px;
-      white-space: nowrap;
-      cursor: pointer;
-      border: none;
-      font-family: 'DM Sans', sans-serif;
-      transition: opacity 0.15s;
-    }
+    .match-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 20px; white-space: nowrap; cursor: pointer; border: none; font-family: 'DM Sans', sans-serif; transition: opacity 0.15s; }
     .match-badge:hover { opacity: 0.8; }
     .match-badge.high   { background: var(--success-light); color: var(--success); }
     .match-badge.medium { background: var(--warn-light); color: var(--warn); }
     .match-badge.low    { background: #fdecea; color: var(--danger); }
     .match-badge.none   { background: #f0eeea; color: var(--muted); border: 1px dashed var(--border); }
-.resume-upload-box { border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; background: var(--bg); display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+
+    .resume-upload-box { border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; background: var(--bg); display: flex; align-items: center; justify-content: space-between; gap: 10px; }
     .resume-status-none { display: flex; align-items: center; gap: 10px; width: 100%; font-size: 13px; color: var(--muted); }
     .resume-status-loaded { display: flex; align-items: center; gap: 10px; width: 100%; font-size: 13px; color: var(--success); font-weight: 500; }
     .btn-upload-resume { margin-left: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 5px 12px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; color: var(--text); transition: border-color 0.15s; white-space: nowrap; }
     .btn-upload-resume:hover { border-color: var(--accent); color: var(--accent); }
-    /* MATCH MODAL */
-    .match-modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(26,25,23,0.45);
-      z-index: 200;
-      align-items: center;
-      justify-content: center;
-    }
+
+    .match-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(26,25,23,0.45); z-index: 200; align-items: center; justify-content: center; }
     .match-modal-overlay.open { display: flex; }
-    .match-modal {
-      background: var(--surface);
-      border-radius: 12px;
-      width: 620px;
-      max-width: 96vw;
-      max-height: 92vh;
-      overflow-y: auto;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.18);
-      animation: slideUp 0.2s ease;
-      display: flex;
-      flex-direction: column;
-    }
-    .match-modal-header {
-      padding: 22px 24px 16px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 12px;
-    }
-    .match-modal-header h2 {
-      font-family: 'DM Serif Display', serif;
-      font-size: 18px;
-      font-weight: 400;
-      line-height: 1.3;
-    }
+    .match-modal { background: var(--surface); border-radius: 12px; width: 620px; max-width: 96vw; max-height: 92vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.18); animation: slideUp 0.2s ease; display: flex; flex-direction: column; }
+    .match-modal-header { padding: 22px 24px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+    .match-modal-header h2 { font-family: 'DM Serif Display', serif; font-size: 18px; font-weight: 400; line-height: 1.3; }
     .match-modal-header .job-sub { font-size: 12px; color: var(--muted); margin-top: 3px; }
     .match-modal-body { padding: 20px 24px; display: flex; flex-direction: column; gap: 14px; flex: 1; }
     .match-modal-body label { font-size: 12px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 5px; }
-    .match-modal-body textarea {
-      width: 100%;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 10px 12px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13px;
-      color: var(--text);
-      background: var(--bg);
-      resize: vertical;
-      outline: none;
-      min-height: 130px;
-      transition: border-color 0.15s;
-    }
+    .match-modal-body textarea { width: 100%; border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 12px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--text); background: var(--bg); resize: vertical; outline: none; min-height: 130px; transition: border-color 0.15s; }
     .match-modal-body textarea:focus { border-color: var(--accent); background: #fff; }
-    .btn-analyze {
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: var(--radius);
-      padding: 10px 22px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: opacity 0.15s;
-      align-self: flex-start;
-      display: flex;
-      align-items: center;
-      gap: 7px;
-    }
+    .btn-analyze { background: var(--accent); color: white; border: none; border-radius: var(--radius); padding: 10px 22px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: opacity 0.15s; align-self: flex-start; display: flex; align-items: center; gap: 7px; }
     .btn-analyze:hover { opacity: 0.85; }
     .btn-analyze:disabled { opacity: 0.5; cursor: not-allowed; }
-    .match-spinner {
-      width: 14px; height: 14px;
-      border: 2px solid rgba(255,255,255,0.4);
-      border-top-color: white;
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-      display: none;
-    }
+    .match-spinner { width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.4); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; display: none; }
     .btn-analyze.loading .match-spinner { display: block; }
     .btn-analyze.loading .btn-analyze-text { opacity: 0.7; }
     @keyframes spin { to { transform: rotate(360deg); } }
-
-    .match-result {
-      display: none;
-      flex-direction: column;
-      gap: 12px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px;
-      background: var(--bg);
-    }
+    .match-result { display: none; flex-direction: column; gap: 12px; border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; background: var(--bg); }
     .match-result.visible { display: flex; }
-    .match-result-top {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-    .match-score-circle {
-      width: 64px; height: 64px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      font-weight: 700;
-      font-family: 'DM Serif Display', serif;
-      flex-shrink: 0;
-    }
+    .match-result-top { display: flex; align-items: center; gap: 14px; }
+    .match-score-circle { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; font-family: 'DM Serif Display', serif; flex-shrink: 0; }
     .match-score-circle.high   { background: var(--success-light); color: var(--success); border: 2px solid var(--accent-mid); }
     .match-score-circle.medium { background: var(--warn-light); color: var(--warn); border: 2px solid #f0d49a; }
     .match-score-circle.low    { background: #fdecea; color: var(--danger); border: 2px solid #f4c4be; }
@@ -346,340 +178,83 @@
     .match-sections { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .match-section h4 { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
     .match-section h4.green { color: var(--success); }
-    .match-section h4.red   { color: var(--danger); }
+    .match-section h4.red { color: var(--danger); }
     .match-section ul { padding-left: 14px; }
     .match-section ul li { font-size: 12px; color: var(--muted); margin-bottom: 3px; line-height: 1.5; }
     .match-tip { font-size: 12px; color: var(--info); background: var(--info-light); border-radius: 6px; padding: 10px 12px; line-height: 1.6; }
-    .match-modal-footer {
-      padding: 14px 24px;
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-    }
+    .match-modal-footer { padding: 14px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; }
 
-    /* AUTOFILL BOX */
-    .jd-autofill-box {
-      background: var(--accent-light);
-      border: 1px solid var(--accent-mid);
-      border-radius: var(--radius);
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 9px;
-    }
-    .jd-autofill-label {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--accent);
-    }
-    .jd-autofill-box textarea {
-      border: 1px solid var(--accent-mid);
-      border-radius: 6px;
-      padding: 9px 11px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 12px;
-      color: var(--text);
-      background: white;
-      resize: vertical;
-      outline: none;
-      min-height: 80px;
-      transition: border-color 0.15s;
-    }
+    .jd-autofill-box { background: var(--accent-light); border: 1px solid var(--accent-mid); border-radius: var(--radius); padding: 14px; display: flex; flex-direction: column; gap: 9px; }
+    .jd-autofill-label { font-size: 12px; font-weight: 600; color: var(--accent); }
+    .jd-autofill-box textarea { border: 1px solid var(--accent-mid); border-radius: 6px; padding: 9px 11px; font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--text); background: white; resize: vertical; outline: none; min-height: 80px; transition: border-color 0.15s; }
     .jd-autofill-box textarea:focus { border-color: var(--accent); }
-    .btn-autofill {
-      align-self: flex-start;
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: var(--radius);
-      padding: 7px 16px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 12px;
-      font-weight: 500;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: opacity 0.15s;
-    }
+    .btn-autofill { align-self: flex-start; background: var(--accent); color: white; border: none; border-radius: var(--radius); padding: 7px 16px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: opacity 0.15s; }
     .btn-autofill:hover { opacity: 0.85; }
     .btn-autofill:disabled { opacity: 0.5; cursor: not-allowed; }
-    .autofill-spinner {
-      width: 12px; height: 12px;
-      border: 2px solid rgba(255,255,255,0.35);
-      border-top-color: white;
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-      display: none;
-    }
+    .autofill-spinner { width: 12px; height: 12px; border: 2px solid rgba(255,255,255,0.35); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; display: none; }
     .btn-autofill.loading .autofill-spinner { display: block; }
     .btn-autofill.loading .btn-autofill-text { opacity: 0.7; }
-    .jd-divider {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: var(--muted);
-      font-size: 11px;
-    }
-    .jd-divider::before, .jd-divider::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
-    /* hide autofill box when editing */
-    .hide-autofill #jdAutofillBox,
-    .hide-autofill .jd-divider { display: none; }
+    .jd-divider { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 11px; }
+    .jd-divider::before, .jd-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .hide-autofill #jdAutofillBox, .hide-autofill .jd-divider { display: none; }
 
-    /* NOTES / LINKS */
     .note-text { font-size: 12px; color: var(--muted); max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .link-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 12px;
-      color: var(--accent);
-      text-decoration: none;
-      border: 1px solid var(--accent-mid);
-      border-radius: 4px;
-      padding: 2px 7px;
-      transition: background 0.1s;
-    }
+    .link-pill { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: var(--accent); text-decoration: none; border: 1px solid var(--accent-mid); border-radius: 4px; padding: 2px 7px; transition: background 0.1s; }
     .link-pill:hover { background: var(--accent-light); }
 
-    /* ACTIONS */
     .actions { display: flex; gap: 6px; }
-    .btn-icon {
-      background: none;
-      border: 1px solid var(--border);
-      border-radius: 5px;
-      width: 28px;
-      height: 28px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.1s, border-color 0.1s;
-      color: var(--muted);
-      font-size: 13px;
-    }
+    .btn-icon { background: none; border: 1px solid var(--border); border-radius: 5px; width: 28px; height: 28px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.1s, border-color 0.1s; color: var(--muted); font-size: 13px; }
     .btn-icon:hover { background: var(--bg); border-color: var(--accent); color: var(--accent); }
     .btn-icon.del:hover { border-color: var(--danger); color: var(--danger); }
 
-    /* INTERVIEW SECTION */
-    .interviews-toggle {
-      font-size: 11px;
-      color: var(--accent);
-      cursor: pointer;
-      text-decoration: underline;
-      background: none;
-      border: none;
-      font-family: 'DM Sans', sans-serif;
-      padding: 0;
-      margin-top: 3px;
-      display: block;
-    }
-    .interview-list {
-      margin-top: 6px;
-      display: none;
-    }
+    .interviews-toggle { font-size: 11px; color: var(--accent); cursor: pointer; text-decoration: underline; background: none; border: none; font-family: 'DM Sans', sans-serif; padding: 0; margin-top: 3px; display: block; }
+    .interview-list { margin-top: 6px; display: none; }
     .interview-list.open { display: block; }
-    .interview-item {
-      font-size: 11px;
-      color: var(--muted);
-      display: flex;
-      gap: 6px;
-      align-items: center;
-      margin-bottom: 3px;
-    }
-    .interview-type {
-      background: var(--accent-light);
-      color: var(--accent);
-      border-radius: 3px;
-      padding: 1px 5px;
-      font-size: 10px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      white-space: nowrap;
-    }
+    .interview-item { font-size: 11px; color: var(--muted); display: flex; gap: 6px; align-items: center; margin-bottom: 3px; }
+    .interview-type { background: var(--accent-light); color: var(--accent); border-radius: 3px; padding: 1px 5px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; white-space: nowrap; }
 
-    /* EMPTY STATE */
-    .empty-row td {
-      text-align: center;
-      padding: 48px;
-      color: var(--muted);
-      font-size: 14px;
-    }
+    .empty-row td { text-align: center; padding: 48px; color: var(--muted); font-size: 14px; }
     .empty-icon { font-size: 28px; margin-bottom: 8px; }
 
-    /* MODAL */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(26,25,23,0.45);
-      z-index: 100;
-      align-items: center;
-      justify-content: center;
-    }
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(26,25,23,0.45); z-index: 100; align-items: center; justify-content: center; }
     .modal-overlay.open { display: flex; }
-    .modal {
-      background: var(--surface);
-      border-radius: 12px;
-      width: 540px;
-      max-width: 95vw;
-      max-height: 92vh;
-      overflow-y: auto;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.18);
-      animation: slideUp 0.2s ease;
-    }
-    @keyframes slideUp {
-      from { transform: translateY(16px); opacity: 0; }
-      to   { transform: translateY(0);    opacity: 1; }
-    }
-    .modal-header {
-      padding: 22px 24px 16px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .modal-header h2 {
-      font-family: 'DM Serif Display', serif;
-      font-size: 18px;
-      font-weight: 400;
-    }
-    .modal-close {
-      background: none;
-      border: none;
-      font-size: 18px;
-      cursor: pointer;
-      color: var(--muted);
-      line-height: 1;
-      padding: 2px;
-    }
+    .modal { background: var(--surface); border-radius: 12px; width: 540px; max-width: 95vw; max-height: 92vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.18); animation: slideUp 0.2s ease; }
+    @keyframes slideUp { from { transform: translateY(16px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .modal-header { padding: 22px 24px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .modal-header h2 { font-family: 'DM Serif Display', serif; font-size: 18px; font-weight: 400; }
+    .modal-close { background: none; border: none; font-size: 18px; cursor: pointer; color: var(--muted); line-height: 1; padding: 2px; }
     .modal-body { padding: 20px 24px 24px; display: flex; flex-direction: column; gap: 14px; }
     .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .field { display: flex; flex-direction: column; gap: 5px; }
     .field label { font-size: 12px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
-    .field input, .field select, .field textarea {
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 8px 11px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13px;
-      color: var(--text);
-      outline: none;
-      transition: border-color 0.15s;
-      background: var(--bg);
-    }
+    .field input, .field select, .field textarea { border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 11px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--text); outline: none; transition: border-color 0.15s; background: var(--bg); }
     .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--accent); background: #fff; }
     .field textarea { resize: vertical; min-height: 64px; }
-
-    /* Interviews in modal */
     .interviews-modal-section { display: flex; flex-direction: column; gap: 8px; }
     .interviews-modal-section h3 { font-size: 12px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
-    .interview-entry {
-      display: grid;
-      grid-template-columns: 120px 1fr 1fr auto;
-      gap: 8px;
-      align-items: center;
-      background: var(--bg);
-      border-radius: var(--radius);
-      padding: 8px 10px;
-      border: 1px solid var(--border);
-    }
-    .interview-entry select, .interview-entry input {
-      border: none;
-      background: transparent;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 12px;
-      color: var(--text);
-      outline: none;
-      padding: 2px 4px;
-    }
-    .btn-add-interview {
-      background: none;
-      border: 1px dashed var(--accent-mid);
-      color: var(--accent);
-      border-radius: var(--radius);
-      padding: 7px;
-      font-size: 12px;
-      cursor: pointer;
-      font-family: 'DM Sans', sans-serif;
-      transition: background 0.1s;
-      text-align: center;
-    }
+    .interview-entry { display: grid; grid-template-columns: 120px 1fr 1fr auto; gap: 8px; align-items: center; background: var(--bg); border-radius: var(--radius); padding: 8px 10px; border: 1px solid var(--border); }
+    .interview-entry select, .interview-entry input { border: none; background: transparent; font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--text); outline: none; padding: 2px 4px; }
+    .btn-add-interview { background: none; border: 1px dashed var(--accent-mid); color: var(--accent); border-radius: var(--radius); padding: 7px; font-size: 12px; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.1s; text-align: center; }
     .btn-add-interview:hover { background: var(--accent-light); }
-    .btn-remove-interview {
-      background: none;
-      border: none;
-      color: var(--muted);
-      cursor: pointer;
-      font-size: 14px;
-      padding: 2px;
-      line-height: 1;
-    }
+    .btn-remove-interview { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 14px; padding: 2px; line-height: 1; }
     .btn-remove-interview:hover { color: var(--danger); }
-
-    .modal-footer {
-      padding: 16px 24px;
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-    }
-    .btn-cancel {
-      background: none;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 8px 18px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13px;
-      cursor: pointer;
-      color: var(--muted);
-    }
+    .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; }
+    .btn-cancel { background: none; border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 18px; font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer; color: var(--muted); }
     .btn-cancel:hover { border-color: var(--text); color: var(--text); }
-    .btn-save {
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: var(--radius);
-      padding: 8px 22px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: opacity 0.15s;
-    }
+    .btn-save { background: var(--accent); color: white; border: none; border-radius: var(--radius); padding: 8px 22px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: opacity 0.15s; }
     .btn-save:hover { opacity: 0.85; }
 
-    /* TOAST */
-    .toast {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background: var(--text);
-      color: white;
-      padding: 10px 18px;
-      border-radius: var(--radius);
-      font-size: 13px;
-      opacity: 0;
-      transform: translateY(8px);
-      transition: all 0.2s;
-      pointer-events: none;
-      z-index: 200;
-    }
+    .toast { position: fixed; bottom: 24px; right: 24px; background: var(--text); color: white; padding: 10px 18px; border-radius: var(--radius); font-size: 13px; opacity: 0; transform: translateY(8px); transition: all 0.2s; pointer-events: none; z-index: 200; }
     .toast.show { opacity: 1; transform: translateY(0); }
 
     @media (max-width: 720px) {
-      header, .toolbar, .table-wrap { padding-left: 16px; padding-right: 16px; }
+      header, .toolbar, .table-wrap, .dashboard { padding-left: 16px; padding-right: 16px; }
       .field-row { grid-template-columns: 1fr; }
       .stats-bar { display: none; }
       .interview-entry { grid-template-columns: 1fr 1fr auto; }
       .interview-entry select:first-child { grid-column: 1 / -1; }
+      .dashboard-grid { grid-template-columns: 1fr 1fr; }
+      .dash-card.wide { grid-column: span 2; }
     }
   </style>
 </head>
@@ -692,6 +267,34 @@
   </div>
   <div class="stats-bar" id="statsBar"></div>
 </header>
+
+<div class="dashboard">
+  <button class="dashboard-toggle" id="dashToggle" onclick="toggleDashboard()">
+    📊 Dashboard <span class="toggle-arrow">▼</span>
+  </button>
+  <div class="dashboard-grid" id="dashGrid">
+    <div class="dash-card">
+      <h3>Application Funnel</h3>
+      <div class="funnel" id="dashFunnel"></div>
+    </div>
+    <div class="dash-card">
+      <h3>Match Score Breakdown</h3>
+      <div class="match-breakdown" id="dashMatch"></div>
+    </div>
+    <div class="dash-card wide">
+      <h3>Applications Over Time</h3>
+      <div class="timeline-chart" id="dashTimeline"></div>
+    </div>
+    <div class="dash-card">
+      <h3>Most Common Skill Gaps</h3>
+      <div class="gaps-list" id="dashGaps"></div>
+    </div>
+    <div class="dash-card">
+      <h3>Top Companies by Priority</h3>
+      <div class="companies-list" id="dashCompanies"></div>
+    </div>
+  </div>
+</div>
 
 <div class="toolbar">
   <input type="text" id="searchInput" placeholder="🔍  Search jobs, companies…"/>
@@ -740,8 +343,6 @@
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
     <div class="modal-body">
-
-      <!-- JD AUTOFILL -->
       <div class="jd-autofill-box" id="jdAutofillBox">
         <div class="jd-autofill-label">✨ Paste job description to auto-fill fields</div>
         <textarea id="fJD" placeholder="Paste the full job description here and click Auto-Fill…" rows="4"></textarea>
@@ -751,32 +352,16 @@
         </button>
       </div>
       <div class="jd-divider"><span>or fill in manually</span></div>
-
       <div class="field-row">
-        <div class="field">
-          <label>Job Title *</label>
-          <input id="fTitle" placeholder="e.g. Communications Associate"/>
-        </div>
-        <div class="field">
-          <label>Company *</label>
-          <input id="fCompany" placeholder="e.g. JPMorgan Chase"/>
-        </div>
+        <div class="field"><label>Job Title *</label><input id="fTitle" placeholder="e.g. Communications Associate"/></div>
+        <div class="field"><label>Company *</label><input id="fCompany" placeholder="e.g. JPMorgan Chase"/></div>
       </div>
       <div class="field-row">
-        <div class="field">
-          <label>Location</label>
-          <input id="fLocation" placeholder="e.g. Jersey City, NJ"/>
-        </div>
-        <div class="field">
-          <label>Salary Range</label>
-          <input id="fSalary" placeholder="e.g. $70,000 – $90,000"/>
-        </div>
+        <div class="field"><label>Location</label><input id="fLocation" placeholder="e.g. Jersey City, NJ"/></div>
+        <div class="field"><label>Salary Range</label><input id="fSalary" placeholder="e.g. $70,000 – $90,000"/></div>
       </div>
       <div class="field-row">
-        <div class="field">
-          <label>Date Applied</label>
-          <input id="fDate" type="date"/>
-        </div>
+        <div class="field"><label>Date Applied</label><input id="fDate" type="date"/></div>
         <div class="field">
           <label>Priority</label>
           <select id="fPriority">
@@ -798,21 +383,10 @@
             <option value="withdrawn">Withdrawn</option>
           </select>
         </div>
-        <div class="field">
-          <label>Job Posting URL</label>
-          <input id="fJobUrl" type="url" placeholder="https://…"/>
-        </div>
+        <div class="field"><label>Job Posting URL</label><input id="fJobUrl" type="url" placeholder="https://…"/></div>
       </div>
-      <div class="field">
-        <label>Cover Letter URL / Doc Link</label>
-        <input id="fCoverUrl" type="url" placeholder="Google Docs, Dropbox…"/>
-      </div>
-      <div class="field">
-        <label>Notes</label>
-        <textarea id="fNotes" placeholder="Recruiter name, key details…"></textarea>
-      </div>
-
-      <!-- Interviews -->
+      <div class="field"><label>Cover Letter URL / Doc Link</label><input id="fCoverUrl" type="url" placeholder="Google Docs, Dropbox…"/></div>
+      <div class="field"><label>Notes</label><textarea id="fNotes" placeholder="Recruiter name, key details…"></textarea></div>
       <div class="interviews-modal-section">
         <h3>Interviews</h3>
         <div id="interviewEntries"></div>
@@ -837,7 +411,6 @@
       <button class="modal-close" onclick="closeMatchModal()">✕</button>
     </div>
     <div class="match-modal-body">
-      <!-- RESUME UPLOAD -->
       <div class="resume-upload-box" id="resumeUploadBox">
         <div id="resumeStatus" class="resume-status-none">
           <span>📄 No resume uploaded yet</span>
@@ -872,7 +445,6 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  // ── STATE ──────────────────────────────────────────────────────
   const STORAGE_KEY = 'jobtracker_v1';
   let jobs = [];
   let editingId = null;
@@ -888,9 +460,7 @@
     if (!jobs.length) seedDefaults();
   }
 
-  function save() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(jobs));
-  }
+  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(jobs)); }
 
   function seedDefaults() {
     jobs = [
@@ -905,7 +475,6 @@
 
   function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
 
-  // ── RENDER ─────────────────────────────────────────────────────
   function render() {
     const search = document.getElementById('searchInput').value.toLowerCase();
     const filterStatus = document.getElementById('filterStatus').value;
@@ -934,7 +503,6 @@
       tbody.innerHTML = filtered.map(j => rowHTML(j)).join('');
     }
 
-    // Update sort arrows
     document.querySelectorAll('th[data-col]').forEach(th => {
       th.classList.toggle('sorted', th.dataset.col === sortCol);
       const arr = th.querySelector('.sort-arrow');
@@ -942,6 +510,7 @@
     });
 
     renderStats();
+    renderDashboard();
   }
 
   function rowHTML(j) {
@@ -968,7 +537,6 @@
       j.coverUrl ? `<a href="${j.coverUrl}" target="_blank" class="link-pill">✉ Cover Letter</a>` : ''
     ].filter(Boolean).join(' ');
 
-    // Match badge
     let matchBadgeHTML;
     if (j.matchScore != null) {
       const tier = j.matchScore >= 70 ? 'high' : j.matchScore >= 45 ? 'medium' : 'low';
@@ -1018,14 +586,10 @@
     const interviews = jobs.filter(j => j.status === 'interviewing').length;
     const offers = jobs.filter(j => j.status === 'offer').length;
     document.getElementById('statsBar').innerHTML = [
-      [total, 'Total'],
-      [active, 'Active'],
-      [interviews, 'Interviewing'],
-      [offers, 'Offers'],
+      [total, 'Total'], [active, 'Active'], [interviews, 'Interviewing'], [offers, 'Offers'],
     ].map(([n, l]) => `<div class="stat"><div class="num">${n}</div><div class="label">${l}</div></div>`).join('');
   }
 
-  // ── SORT ───────────────────────────────────────────────────────
   document.querySelectorAll('th[data-col]').forEach(th => {
     th.addEventListener('click', () => {
       const col = th.dataset.col;
@@ -1038,7 +602,6 @@
   document.getElementById('filterStatus').addEventListener('change', render);
   document.getElementById('filterPriority').addEventListener('change', render);
 
-  // ── MODAL ──────────────────────────────────────────────────────
   function openModal(id) {
     editingId = id || null;
     const j = id ? jobs.find(x => x.id === id) : null;
@@ -1054,11 +617,10 @@
     document.getElementById('fNotes').value = j?.notes || '';
     document.getElementById('fSalary').value = j?.salary || '';
     document.getElementById('fJD').value = '';
+    document.getElementById('fJD').dataset.filled = '';
     document.getElementById('btnAutofill').classList.remove('loading');
     document.getElementById('btnAutofill').disabled = false;
-    // Hide autofill box when editing an existing job
-    const modal = document.querySelector('.modal');
-    modal.classList.toggle('hide-autofill', !!id);
+    document.querySelector('.modal').classList.toggle('hide-autofill', !!id);
     document.getElementById('interviewEntries').innerHTML = '';
     (j?.interviews || []).forEach(iv => addInterviewEntry(iv));
     document.getElementById('modalOverlay').classList.add('open');
@@ -1121,7 +683,6 @@
     showToast('Deleted.');
   }
 
-  // ── INTERVIEW ENTRIES ──────────────────────────────────────────
   function addInterviewEntry(iv) {
     const container = document.getElementById('interviewEntries');
     const div = document.createElement('div');
@@ -1143,7 +704,6 @@
     container.appendChild(div);
   }
 
-  // ── TOAST ──────────────────────────────────────────────────────
   let toastTimer;
   function showToast(msg) {
     const t = document.getElementById('toast');
@@ -1153,7 +713,6 @@
     toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
   }
 
-  // ── AUTOFILL FROM JD ──────────────────────────────────────────
   async function runAutofill() {
     const jd = document.getElementById('fJD').value.trim();
     if (!jd) { showToast('Paste a job description first.'); return; }
@@ -1179,6 +738,7 @@ ${jd}`;
         body: JSON.stringify({
           model: 'claude-sonnet-4-20250514',
           max_tokens: 300,
+          temperature: 0,
           messages: [{ role: 'user', content: prompt }]
         })
       });
@@ -1192,7 +752,6 @@ ${jd}`;
       if (result.company)  document.getElementById('fCompany').value  = result.company;
       if (result.location) document.getElementById('fLocation').value = result.location;
       if (result.salary)   document.getElementById('fSalary').value   = result.salary;
-      // Store JD for match analysis later
       document.getElementById('fJD').dataset.filled = jd;
       showToast('Fields auto-filled! Review and save.');
       document.getElementById('fTitle').focus();
@@ -1261,6 +820,7 @@ ${jd}`;
     document.getElementById('btnAnalyze').classList.remove('loading');
     document.getElementById('btnAnalyze').disabled = false;
     pendingMatchResult = null;
+    updateResumeStatus();
     document.getElementById('matchModalOverlay').classList.add('open');
     setTimeout(() => document.getElementById('matchJD').focus(), 100);
   }
@@ -1278,6 +838,7 @@ ${jd}`;
   async function runMatchAnalysis() {
     const jd = document.getElementById('matchJD').value.trim();
     if (!jd) { showToast('Please paste a job description first.'); return; }
+    if (!resumeBase64) { showToast('Please upload your resume PDF first.'); return; }
 
     const btn = document.getElementById('btnAnalyze');
     btn.classList.add('loading');
@@ -1285,10 +846,9 @@ ${jd}`;
     document.getElementById('matchResult').classList.remove('visible');
     document.getElementById('btnSaveMatch').style.display = 'none';
 
-    const j = jobs.find(x => x.id === matchJobId);
-    const prompt = `You are a career coach and resume expert. Analyze how well this candidate matches the job description.
+    const prompt = `You are a career coach and resume expert. Carefully read the attached resume PDF and analyze how well this candidate matches the job description below.
 
-
+Be specific and accurate — reference actual details from the resume (job titles, metrics, tools, skills) in your analysis.
 
 JOB DESCRIPTION:
 ${jd}
@@ -1296,10 +856,10 @@ ${jd}
 Return ONLY valid JSON (no markdown, no explanation) in this exact format:
 {
   "score": <integer 0-100>,
-  "summary": "<2-sentence plain-English summary of fit>",
-  "strengths": ["<strength 1>", "<strength 2>", "<strength 3>"],
-  "gaps": ["<gap 1>", "<gap 2>"],
-  "tip": "<one specific, actionable tip to improve the application>"
+  "summary": "<2-sentence plain-English summary of fit, referencing specific resume details>",
+  "strengths": ["<specific strength from resume matching JD>", "<specific strength>", "<specific strength>"],
+  "gaps": ["<specific gap or missing requirement>", "<specific gap>"],
+  "tip": "<one specific, actionable tip to tailor the resume or application for this role>"
 }`;
 
     try {
@@ -1311,12 +871,12 @@ Return ONLY valid JSON (no markdown, no explanation) in this exact format:
           max_tokens: 1000,
           temperature: 0,
           messages: [{
-        role: 'user',
-        content: [
-          { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: resumeBase64 } },
-          { type: 'text', text: prompt }
-        ]
-      }]
+            role: 'user',
+            content: [
+              { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: resumeBase64 } },
+              { type: 'text', text: prompt }
+            ]
+          }]
         })
       });
       const rawText = await resp.text();
@@ -1368,6 +928,143 @@ Return ONLY valid JSON (no markdown, no explanation) in this exact format:
       showToast('Match score saved!');
       closeMatchModal();
     }
+  }
+
+  // ── DASHBOARD ─────────────────────────────────────────────────
+  function toggleDashboard() {
+    const btn = document.getElementById('dashToggle');
+    const grid = document.getElementById('dashGrid');
+    btn.classList.toggle('open');
+    grid.classList.toggle('open');
+    if (grid.classList.contains('open')) renderDashboard();
+  }
+
+  function renderDashboard() {
+    if (!document.getElementById('dashGrid').classList.contains('open')) return;
+    renderFunnel();
+    renderMatchBreakdown();
+    renderTimeline();
+    renderGaps();
+    renderCompanies();
+  }
+
+  function renderFunnel() {
+    const statuses = ['wishlist','applied','interviewing','offer','rejected'];
+    const labels = { wishlist:'Wishlist', applied:'Applied', interviewing:'Interviewing', offer:'Offer', rejected:'Rejected' };
+    const counts = {};
+    statuses.forEach(s => counts[s] = jobs.filter(j => j.status === s).length);
+    const max = Math.max(...Object.values(counts), 1);
+    document.getElementById('dashFunnel').innerHTML = statuses.map(s => `
+      <div class="funnel-row">
+        <div class="funnel-label">${labels[s]}</div>
+        <div class="funnel-bar-wrap"><div class="funnel-bar ${s}" style="width:${Math.max(4, counts[s]/max*100)}%"></div></div>
+        <div class="funnel-count">${counts[s]}</div>
+      </div>`).join('');
+  }
+
+  function renderMatchBreakdown() {
+    const scored = jobs.filter(j => j.matchScore != null);
+    const high = scored.filter(j => j.matchScore >= 70).length;
+    const med  = scored.filter(j => j.matchScore >= 45 && j.matchScore < 70).length;
+    const low  = scored.filter(j => j.matchScore < 45).length;
+    const total = scored.length;
+    const avg = total ? Math.round(scored.reduce((s,j) => s + j.matchScore, 0) / total) : null;
+
+    if (!total) {
+      document.getElementById('dashMatch').innerHTML = `<span style="font-size:12px;color:var(--muted)">No match scores yet — run an analysis!</span>`;
+      return;
+    }
+
+    const r = 28, circ = 2 * Math.PI * r;
+    const highDash = (high/total) * circ;
+    const medDash  = (med/total)  * circ;
+    const lowDash  = (low/total)  * circ;
+
+    document.getElementById('dashMatch').innerHTML = `
+      <div class="match-donut-wrap">
+        <svg width="72" height="72" viewBox="0 0 72 72">
+          <circle cx="36" cy="36" r="${r}" fill="none" stroke="var(--border)" stroke-width="8"/>
+          <circle cx="36" cy="36" r="${r}" fill="none" stroke="#b84a3a" stroke-width="8"
+            stroke-dasharray="${lowDash} ${circ}" stroke-dashoffset="0"/>
+          <circle cx="36" cy="36" r="${r}" fill="none" stroke="#c47a1e" stroke-width="8"
+            stroke-dasharray="${medDash} ${circ}" stroke-dashoffset="${-lowDash}"/>
+          <circle cx="36" cy="36" r="${r}" fill="none" stroke="#2d5a3d" stroke-width="8"
+            stroke-dasharray="${highDash} ${circ}" stroke-dashoffset="${-(lowDash+medDash)}"/>
+        </svg>
+        <div class="match-donut-label">${avg}%</div>
+      </div>
+      <div class="match-legend">
+        <div class="match-legend-item"><div class="match-legend-dot" style="background:#2d5a3d"></div>Strong (70%+) — ${high}</div>
+        <div class="match-legend-item"><div class="match-legend-dot" style="background:#c47a1e"></div>Moderate (45–69%) — ${med}</div>
+        <div class="match-legend-item"><div class="match-legend-dot" style="background:#b84a3a"></div>Low (&lt;45%) — ${low}</div>
+        <div class="match-legend-item" style="margin-top:2px;font-weight:500;color:var(--text)">${total} analyzed</div>
+      </div>`;
+  }
+
+  function renderTimeline() {
+    const applied = jobs.filter(j => j.dateApplied);
+    if (!applied.length) {
+      document.getElementById('dashTimeline').innerHTML = `<span style="font-size:12px;color:var(--muted)">No application dates recorded yet.</span>`;
+      return;
+    }
+    const weeks = {};
+    applied.forEach(j => {
+      const d = new Date(j.dateApplied + 'T00:00:00');
+      const start = new Date(d);
+      start.setDate(d.getDate() - d.getDay());
+      const key = start.toISOString().slice(0,10);
+      weeks[key] = (weeks[key] || 0) + 1;
+    });
+    const sorted = Object.keys(weeks).sort().slice(-8);
+    const max = Math.max(...sorted.map(k => weeks[k]), 1);
+    document.getElementById('dashTimeline').innerHTML = sorted.map(k => {
+      const label = new Date(k + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      const h = Math.max(4, (weeks[k]/max) * 52);
+      return `<div class="timeline-col">
+        <div class="timeline-num">${weeks[k]}</div>
+        <div class="timeline-bar-wrap"><div class="timeline-bar ${weeks[k]===0?'zero':''}" style="height:${h}px"></div></div>
+        <div class="timeline-label">${label}</div>
+      </div>`;
+    }).join('');
+  }
+
+  function renderGaps() {
+    const allGaps = jobs.flatMap(j => j.matchData?.gaps || []);
+    if (!allGaps.length) {
+      document.getElementById('dashGaps').innerHTML = `<span style="font-size:12px;color:var(--muted)">Run match analyses to see common gaps.</span>`;
+      return;
+    }
+    const freq = {};
+    allGaps.forEach(g => {
+      const key = g.toLowerCase().slice(0, 40);
+      if (!freq[key]) freq[key] = { label: g, count: 0 };
+      freq[key].count++;
+    });
+    const top = Object.values(freq).sort((a,b) => b.count - a.count).slice(0, 5);
+    const max = top[0].count;
+    document.getElementById('dashGaps').innerHTML = top.map(g => `
+      <div class="gap-row">
+        <div class="gap-name" title="${esc(g.label)}">${esc(g.label)}</div>
+        <div class="gap-bar-wrap"><div class="gap-bar" style="width:${(g.count/max)*100}%"></div></div>
+        <div class="gap-count">${g.count}</div>
+      </div>`).join('');
+  }
+
+  function renderCompanies() {
+    const top = [...jobs].sort((a,b) => (priorityOrder[a.priority]??9) - (priorityOrder[b.priority]??9)).slice(0,6);
+    document.getElementById('dashCompanies').innerHTML = top.map(j => {
+      const priColor = { high: 'var(--danger)', medium: 'var(--warn)', low: 'var(--info)' }[j.priority];
+      const tier = j.matchScore != null ? (j.matchScore >= 70 ? 'high' : j.matchScore >= 45 ? 'medium' : 'low') : null;
+      const matchColor = { high: 'var(--success)', medium: 'var(--warn)', low: 'var(--danger)' }[tier] || 'var(--muted)';
+      return `<div class="company-row">
+        <div class="company-name" title="${esc(j.title)} — ${esc(j.company)}">${esc(j.company)}</div>
+        <div class="company-badges">
+          <span style="font-size:11px;font-weight:600;color:${priColor}">${j.priority}</span>
+          ${j.matchScore != null ? `<span style="font-size:11px;font-weight:600;color:${matchColor}">${j.matchScore}%</span>` : ''}
+          <span class="status ${j.status}" style="font-size:10px;padding:2px 7px">${j.status}</span>
+        </div>
+      </div>`;
+    }).join('');
   }
 
   // ── KEYBOARD ──────────────────────────────────────────────────
