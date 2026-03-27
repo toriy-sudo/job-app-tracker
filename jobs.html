@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Job Finder</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f7f6f3;
+      --surface: #ffffff;
+      --border: #e5e2db;
+      --text: #1a1917;
+      --muted: #8a8780;
+      --accent: #2d5a3d;
+      --accent-light: #eaf1ec;
+      --accent-mid: #c8dece;
+      --danger: #b84a3a;
+      --warn: #c47a1e;
+      --warn-light: #fdf3e3;
+      --info: #2b5c8a;
+      --info-light: #e8f0f8;
+      --radius: 8px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.07), 0 4px 12px rgba(0,0,0,0.04);
+    }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 14px; line-height: 1.5; }
+
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 32px;
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+    }
+    header h1 { font-family: 'DM Serif Display', serif; font-size: 22px; font-weight: 400; letter-spacing: -0.3px; }
+    header .subtitle { font-size: 13px; color: var(--muted); font-weight: 300; }
+    .nav-link { margin-left: auto; font-size: 13px; color: var(--accent); text-decoration: none; font-weight: 500; border: 1px solid var(--accent-mid); border-radius: var(--radius); padding: 6px 14px; transition: background 0.15s; }
+    .nav-link:hover { background: var(--accent-light); }
+
+    /* SEARCH BAR */
+    .search-section { padding: 24px 32px 0; }
+    .search-box {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .search-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .search-input-wrap { flex: 2; min-width: 200px; position: relative; }
+    .search-input-wrap input {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 9px 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.15s;
+      background: var(--bg);
+    }
+    .search-input-wrap input:focus { border-color: var(--accent); background: #fff; }
+    .location-wrap { flex: 1; min-width: 160px; }
+    .location-wrap input {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 9px 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.15s;
+      background: var(--bg);
+    }
+    .location-wrap input:focus { border-color: var(--accent); background: #fff; }
+    .btn-search {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: var(--radius);
+      padding: 9px 22px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      white-space: nowrap;
+    }
+    .btn-search:hover { opacity: 0.85; }
+    .btn-search:disabled { opacity: 0.5; cursor: not-allowed; }
+    .search-spinner { width: 13px; height: 13px; border: 2px solid rgba(255,255,255,0.35); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; display: none; }
+    .btn-search.loading .search-spinner { display: block; }
+    .btn-search.loading .search-text { opacity: 0.7; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* QUICK FILTERS */
+    .quick-filters { display: flex; gap: 8px; flex-wrap: wrap; }
+    .filter-chip {
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      background: var(--bg);
+      transition: all 0.15s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .filter-chip:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+    .filter-chip.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+    /* RESULTS */
+    .results-section { padding: 20px 32px 40px; }
+    .results-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .results-count { font-size: 13px; color: var(--muted); }
+    .results-count strong { color: var(--text); }
+
+    .job-grid { display: flex; flex-direction: column; gap: 12px; }
+
+    .job-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px 20px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      transition: box-shadow 0.15s;
+      border: 1px solid transparent;
+    }
+    .job-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.09); border-color: var(--border); }
+    .job-card-body { flex: 1; min-width: 0; }
+    .job-card-title { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+    .job-card-company { font-size: 13px; color: var(--accent); font-weight: 500; margin-bottom: 6px; }
+    .job-card-meta { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+    .job-meta-item { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--muted); }
+    .job-card-description { font-size: 13px; color: var(--muted); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .job-card-footer { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; align-items: center; }
+    .job-tag { background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; font-size: 11px; color: var(--muted); }
+    .job-posted { font-size: 11px; color: var(--muted); margin-left: auto; }
+
+    .btn-apply {
+      background: none;
+      border: 1px solid var(--accent-mid);
+      color: var(--accent);
+      border-radius: var(--radius);
+      padding: 6px 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .btn-apply:hover { background: var(--accent-light); }
+    .btn-add-tracker {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: var(--radius);
+      padding: 6px 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .btn-add-tracker:hover { opacity: 0.85; }
+    .btn-add-tracker.added { background: var(--muted); cursor: default; }
+    .btn-add-tracker.added:hover { opacity: 1; }
+
+    /* EMPTY / LOADING STATES */
+    .state-box {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 48px;
+      text-align: center;
+      color: var(--muted);
+    }
+    .state-icon { font-size: 32px; margin-bottom: 10px; }
+    .state-title { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--text); margin-bottom: 6px; font-weight: 400; }
+    .state-sub { font-size: 13px; }
+
+    /* LOAD MORE */
+    .load-more-wrap { display: flex; justify-content: center; margin-top: 20px; }
+    .btn-load-more {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 9px 24px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      color: var(--text);
+      transition: border-color 0.15s;
+    }
+    .btn-load-more:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* TOAST */
+    .toast { position: fixed; bottom: 24px; right: 24px; background: var(--text); color: white; padding: 10px 18px; border-radius: var(--radius); font-size: 13px; opacity: 0; transform: translateY(8px); transition: all 0.2s; pointer-events: none; z-index: 200; }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 720px) {
+      header, .search-section, .results-section { padding-left: 16px; padding-right: 16px; }
+      .search-row { flex-direction: column; }
+      .job-card { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Job Finder</h1>
+    <span class="subtitle">Discover roles tailored to your background</span>
+  </div>
+  <a href="index.html" class="nav-link">← My Tracker</a>
+</header>
+
+<div class="search-section">
+  <div class="search-box">
+    <div class="search-row">
+      <div class="search-input-wrap">
+        <input id="searchQuery" type="text" placeholder="e.g. Communications Manager, Newsletter Editor…" value="communications marketing"/>
+      </div>
+      <div class="location-wrap">
+        <input id="searchLocation" type="text" placeholder="Location" value="New York, NY"/>
+      </div>
+      <button class="btn-search" id="btnSearch" onclick="doSearch()">
+        <div class="search-spinner"></div>
+        <span class="search-text">🔍 Search</span>
+      </button>
+    </div>
+    <div class="quick-filters" id="quickFilters">
+      <span style="font-size:12px;color:var(--muted);align-self:center;">Quick:</span>
+      <button class="filter-chip" onclick="quickSearch('Communications Manager')">Communications Manager</button>
+      <button class="filter-chip" onclick="quickSearch('Newsletter Editor')">Newsletter Editor</button>
+      <button class="filter-chip" onclick="quickSearch('Content Strategist')">Content Strategist</button>
+      <button class="filter-chip" onclick="quickSearch('Marketing Coordinator')">Marketing Coordinator</button>
+      <button class="filter-chip" onclick="quickSearch('Editorial Manager')">Editorial Manager</button>
+      <button class="filter-chip" onclick="quickSearch('Social Media Manager')">Social Media Manager</button>
+    </div>
+  </div>
+</div>
+
+<div class="results-section">
+  <div id="resultsArea">
+    <div class="state-box">
+      <div class="state-icon">🔍</div>
+      <div class="state-title">Find your next role</div>
+      <div class="state-sub">Search above or tap a quick filter to see current openings</div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const WORKER_URL = 'https://autumn-poetry-d448.toriy9900.workers.dev';
+  const TRACKER_KEY = 'jobtracker_v1';
+  let currentResults = [];
+  let currentStart = 0;
+  let currentQuery = '';
+  let currentLocation = '';
+  let addedJobs = new Set();
+
+  // Load already-tracked jobs so we can mark them
+  function loadTrackedTitles() {
+    try {
+      const jobs = JSON.parse(localStorage.getItem(TRACKER_KEY)) || [];
+      jobs.forEach(j => addedJobs.add(`${j.title}__${j.company}`.toLowerCase()));
+    } catch(e) {}
+  }
+
+  function quickSearch(query) {
+    document.getElementById('searchQuery').value = query;
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    event.target.classList.add('active');
+    doSearch();
+  }
+
+  async function doSearch(append = false) {
+    const query = document.getElementById('searchQuery').value.trim();
+    const location = document.getElementById('searchLocation').value.trim();
+    if (!query) { showToast('Enter a job title to search.'); return; }
+
+    if (!append) {
+      currentStart = 0;
+      currentResults = [];
+      currentQuery = query;
+      currentLocation = location;
+    }
+
+    const btn = document.getElementById('btnSearch');
+    btn.classList.add('loading');
+    btn.disabled = true;
+
+    if (!append) {
+      document.getElementById('resultsArea').innerHTML = `
+        <div class="state-box">
+          <div class="state-icon">⏳</div>
+          <div class="state-title">Searching...</div>
+          <div class="state-sub">Finding ${query} roles near ${location || 'your area'}</div>
+        </div>`;
+    }
+
+    try {
+      const resp = await fetch(`${WORKER_URL}/search?q=${encodeURIComponent(query + ' jobs')}&location=${encodeURIComponent(location)}&start=${currentStart}`);
+      const data = await resp.json();
+
+      if (data.error) throw new Error(data.error);
+
+      const jobs = data.jobs_results || [];
+
+      if (!jobs.length && !append) {
+        document.getElementById('resultsArea').innerHTML = `
+          <div class="state-box">
+            <div class="state-icon">😕</div>
+            <div class="state-title">No results found</div>
+            <div class="state-sub">Try a different search term or location</div>
+          </div>`;
+        return;
+      }
+
+      currentResults = append ? [...currentResults, ...jobs] : jobs;
+      currentStart += jobs.length;
+      renderResults(currentResults, jobs.length >= 10);
+    } catch (err) {
+      console.error(err);
+      document.getElementById('resultsArea').innerHTML = `
+        <div class="state-box">
+          <div class="state-icon">⚠️</div>
+          <div class="state-title">Search failed</div>
+          <div class="state-sub">Check your SerpAPI key in the Cloudflare Worker and try again.</div>
+        </div>`;
+    } finally {
+      btn.classList.remove('loading');
+      btn.disabled = false;
+    }
+  }
+
+  function renderResults(jobs, hasMore) {
+    const html = `
+      <div class="results-header">
+        <div class="results-count">Showing <strong>${jobs.length}</strong> results for "<strong>${currentQuery}</strong>"${currentLocation ? ` in <strong>${currentLocation}</strong>` : ''}</div>
+      </div>
+      <div class="job-grid">
+        ${jobs.map(j => jobCardHTML(j)).join('')}
+      </div>
+      ${hasMore ? `<div class="load-more-wrap"><button class="btn-load-more" onclick="doSearch(true)">Load more results</button></div>` : ''}
+    `;
+    document.getElementById('resultsArea').innerHTML = html;
+  }
+
+  function jobCardHTML(job) {
+    const key = `${job.title}__${job.company_name}`.toLowerCase();
+    const isAdded = addedJobs.has(key);
+    const salary = job.detected_extensions?.salary || job.salary || '';
+    const jobType = job.detected_extensions?.work_from_home ? '🏠 Remote' : '';
+    const posted = job.detected_extensions?.posted_at || '';
+    const applyLink = job.related_links?.[0]?.link || job.apply_options?.[0]?.link || '#';
+    const desc = job.description || '';
+    const highlights = job.job_highlights || [];
+
+    return `<div class="job-card">
+      <div class="job-card-body">
+        <div class="job-card-title">${esc(job.title || '')}</div>
+        <div class="job-card-company">${esc(job.company_name || '')}</div>
+        <div class="job-card-meta">
+          ${job.location ? `<div class="job-meta-item">📍 ${esc(job.location)}</div>` : ''}
+          ${salary ? `<div class="job-meta-item">💰 ${esc(salary)}</div>` : ''}
+          ${jobType ? `<div class="job-meta-item">${jobType}</div>` : ''}
+        </div>
+        <div class="job-card-description">${esc(desc)}</div>
+        <div class="job-card-footer">
+          ${applyLink !== '#' ? `<a href="${applyLink}" target="_blank" class="btn-apply">📄 View Job</a>` : ''}
+          <button class="btn-add-tracker ${isAdded ? 'added' : ''}" id="addbtn_${encodeKey(key)}" onclick="addToTracker(${JSON.stringify(job).replace(/"/g, '&quot;')})">
+            ${isAdded ? '✓ In Tracker' : '+ Add to Tracker'}
+          </button>
+          ${posted ? `<span class="job-posted">${esc(posted)}</span>` : ''}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function encodeKey(key) {
+    return key.replace(/[^a-z0-9]/g, '_').slice(0, 30);
+  }
+
+  function addToTracker(job) {
+    const key = `${job.title}__${job.company_name}`.toLowerCase();
+    if (addedJobs.has(key)) return;
+
+    try {
+      const jobs = JSON.parse(localStorage.getItem(TRACKER_KEY)) || [];
+      const newJob = {
+        id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+        title: job.title || '',
+        company: job.company_name || '',
+        location: job.location || '',
+        salary: job.detected_extensions?.salary || job.salary || '',
+        status: 'wishlist',
+        priority: 'medium',
+        dateApplied: '',
+        jobUrl: job.related_links?.[0]?.link || job.apply_options?.[0]?.link || '',
+        coverUrl: '',
+        notes: '',
+        jdText: job.description || '',
+        interviews: [],
+      };
+      jobs.unshift(newJob);
+      localStorage.setItem(TRACKER_KEY, JSON.stringify(jobs));
+      addedJobs.add(key);
+
+      // Update button
+      const btnId = 'addbtn_' + encodeKey(key);
+      const btn = document.getElementById(btnId);
+      if (btn) { btn.textContent = '✓ In Tracker'; btn.classList.add('added'); }
+
+      showToast(`"${job.title}" added to your tracker!`);
+    } catch(e) {
+      showToast('Could not add to tracker.');
+      console.error(e);
+    }
+  }
+
+  function esc(str) {
+    return (str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+  }
+
+  document.getElementById('searchQuery').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doSearch();
+  });
+  document.getElementById('searchLocation').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doSearch();
+  });
+
+  loadTrackedTitles();
+</script>
+</body>
+</html>
