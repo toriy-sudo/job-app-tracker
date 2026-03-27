@@ -1206,20 +1206,46 @@ ${jd}`;
   }
 
   // ── MATCH MODAL ────────────────────────────────────────────────
-  const RESUME_TEXT = `Victoria Yeasky — Communications & Marketing Professional
-Editorial & Media Specialist, Rutgers University OIT (May 2024–Present)
-- Manages 1,200+ subscriber newsletter with 53% open rate (+6% YoY)
-- Oversees content strategy across 8M annual page view website
-- Drives 10K+ YoY social impression growth via Hootsuite
-- Leads 5–10 concurrent campaigns and 10–20 monthly initiatives
-- Tools: WordPress, GA4, Mailchimp, Constant Contact, Canva, Adobe Creative Cloud, Airtable, Contentful, Microsoft 365
-Communications & Marketing Specialist, Rutgers OIT (June 2023–May 2024)
-- Supported editorial calendar, social media, and stakeholder communications for 100K+ audience
-Managing Editor & Head News Editor, The Daily Targum
-Digital Marketing Intern, Mila
-Education: M.S. Digital Marketing, Rutgers Business School (GPA 3.75, Jan 2026)
-B.S. Marketing Cum Laude, Rutgers Business School (May 2023)
-Skills: Newsletter strategy, content marketing, editorial planning, social media management, SEO, analytics, campaign management, stakeholder communications, copywriting, Adobe Creative Cloud, Canva, WordPress, GA4, Hootsuite, Mailchimp, Constant Contact, Airtable, Contentful, Microsoft 365`;
+  let resumeBase64 = null;
+  let resumeFileName = null;
+
+  function loadSavedResume() {
+    try {
+      const saved = localStorage.getItem('jobtracker_resume');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        resumeBase64 = parsed.data;
+        resumeFileName = parsed.name;
+        updateResumeStatus();
+      }
+    } catch(e) {}
+  }
+
+  function updateResumeStatus() {
+    const box = document.getElementById('resumeStatus');
+    if (!box) return;
+    if (resumeBase64) {
+      box.className = 'resume-status-loaded';
+      box.innerHTML = `<span>✅ ${esc(resumeFileName)}</span><label class="btn-upload-resume" for="resumeFileInput" style="color:var(--muted)">Replace</label><input type="file" id="resumeFileInput" accept=".pdf" style="display:none" onchange="handleResumeUpload(event)"/>`;
+    } else {
+      box.className = 'resume-status-none';
+      box.innerHTML = `<span>📄 No resume uploaded yet</span><label class="btn-upload-resume" for="resumeFileInput">Upload Resume PDF</label><input type="file" id="resumeFileInput" accept=".pdf" style="display:none" onchange="handleResumeUpload(event)"/>`;
+    }
+  }
+
+  function handleResumeUpload(event) {
+    const file = event.target.files[0];
+    if (!file || file.type !== 'application/pdf') { showToast('Please upload a PDF file.'); return; }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      resumeBase64 = e.target.result.split(',')[1];
+      resumeFileName = file.name;
+      try { localStorage.setItem('jobtracker_resume', JSON.stringify({ data: resumeBase64, name: resumeFileName })); } catch(e) {}
+      updateResumeStatus();
+      showToast('Resume uploaded! Ready to analyze.');
+    };
+    reader.readAsDataURL(file);
+  }
 
   let matchJobId = null;
   let pendingMatchResult = null;
