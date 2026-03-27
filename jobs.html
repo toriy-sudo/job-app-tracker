@@ -261,15 +261,16 @@
   async function fetchIndeed(query, location) {
     const resp = await fetch(`${WORKER_URL}/search/indeed?q=${encodeURIComponent(query)}&location=${encodeURIComponent(location)}`);
     const data = await resp.json();
+    console.log('Indeed raw:', data);
     if (data.error) throw new Error(data.error);
-    return (data.jobs || data.organic_results || []).map(j => ({
+    const results = data.jobs_results || data.jobs || data.organic_results || data.results || [];
+    return results.map(j => ({
       title: j.title || '',
       company_name: j.company || j.company_name || '',
       location: j.location || '',
       description: j.snippet || j.description || '',
-      detected_extensions: { posted_at: j.date || '', salary: j.salary || '' },
+      detected_extensions: { posted_at: j.date || j.posted_at || '', salary: j.salary || '' },
       apply_options: j.link ? [{ link: j.link }] : [],
-      _raw: j,
     }));
   }
 
