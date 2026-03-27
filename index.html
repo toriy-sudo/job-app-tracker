@@ -222,7 +222,11 @@
     .match-badge.medium { background: var(--warn-light); color: var(--warn); }
     .match-badge.low    { background: #fdecea; color: var(--danger); }
     .match-badge.none   { background: #f0eeea; color: var(--muted); border: 1px dashed var(--border); }
-
+.resume-upload-box { border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; background: var(--bg); display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .resume-status-none { display: flex; align-items: center; gap: 10px; width: 100%; font-size: 13px; color: var(--muted); }
+    .resume-status-loaded { display: flex; align-items: center; gap: 10px; width: 100%; font-size: 13px; color: var(--success); font-weight: 500; }
+    .btn-upload-resume { margin-left: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 5px 12px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; color: var(--text); transition: border-color 0.15s; white-space: nowrap; }
+    .btn-upload-resume:hover { border-color: var(--accent); color: var(--accent); }
     /* MATCH MODAL */
     .match-modal-overlay {
       display: none;
