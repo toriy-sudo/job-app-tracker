@@ -1310,7 +1310,13 @@ Return ONLY valid JSON (no markdown, no explanation) in this exact format:
         body: JSON.stringify({
           model: 'claude-sonnet-4-20250514',
           max_tokens: 1000,
-          messages: [{ role: 'user', content: prompt }]
+          messages: [{
+        role: 'user',
+        content: [
+          { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: resumeBase64 } },
+          { type: 'text', text: prompt }
+        ]
+      }]
         })
       });
       const rawText = await resp.text();
