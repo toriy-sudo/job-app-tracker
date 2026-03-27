@@ -833,6 +833,14 @@
       <button class="modal-close" onclick="closeMatchModal()">✕</button>
     </div>
     <div class="match-modal-body">
+      <!-- RESUME UPLOAD -->
+      <div class="resume-upload-box" id="resumeUploadBox">
+        <div id="resumeStatus" class="resume-status-none">
+          <span>📄 No resume uploaded yet</span>
+          <label class="btn-upload-resume" for="resumeFileInput">Upload Resume PDF</label>
+          <input type="file" id="resumeFileInput" accept=".pdf" style="display:none" onchange="handleResumeUpload(event)"/>
+        </div>
+      </div>
       <div>
         <label>Paste Job Description</label>
         <textarea id="matchJD" placeholder="Paste the full job description here…"></textarea>
