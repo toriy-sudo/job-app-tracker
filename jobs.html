@@ -245,15 +245,16 @@
   async function fetchLinkedIn(query, location) {
     const resp = await fetch(`${WORKER_URL}/search/linkedin?q=${encodeURIComponent(query)}&location=${encodeURIComponent(location)}`);
     const data = await resp.json();
+    console.log('LinkedIn raw:', data);
     if (data.error) throw new Error(data.error);
-    return (data.jobs || []).map(j => ({
-      title: j.position || j.title || '',
-      company_name: j.company || '',
+    const results = data.jobs_results || data.jobs || data.linkedin_jobs || data.results || [];
+    return results.map(j => ({
+      title: j.title || j.position || '',
+      company_name: j.company || j.company_name || j.employer || '',
       location: j.location || '',
-      description: j.description || '',
-      detected_extensions: { posted_at: j.ago || '' },
-      apply_options: j.link ? [{ link: j.link }] : [],
-      _raw: j,
+      description: j.description || j.snippet || '',
+      detected_extensions: { posted_at: j.ago || j.date || j.posted_at || '' },
+      apply_options: j.link ? [{ link: j.link }] : (j.job_link ? [{ link: j.job_link }] : []),
     }));
   }
 
